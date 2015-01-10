@@ -10,7 +10,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     static char s_buffer[42];
     
     snprintf(s_buffer, sizeof(s_buffer), "'%s'", t->value->cstring);
-    status_push_update(s_buffer);
+    status_push_update(s_buffer, 0);
     vibes_short_pulse();
     
     t = dict_read_next(iterator);

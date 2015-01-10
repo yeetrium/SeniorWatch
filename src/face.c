@@ -4,6 +4,8 @@ Layer *layer_face;
 TextLayer *time_layer;
 TextLayer *greeting_layer;
 
+AppTimer *greeting_timer;
+
 // TODO: Add real greetings
 const char *greetings[8] = { 
   "You're going to do great today.",
@@ -45,6 +47,18 @@ void face_greeting_hide() {
   text_layer_set_text(greeting_layer, "");
 }
 
+void face_greeting_update(const char *text) {
+  text_layer_set_text(greeting_layer, text);
+  int lifespan = 5000 + (strlen(text) * 200);
+  
+  if(lifespan > 0) {
+    if(greeting_timer != NULL) app_timer_reschedule(greeting_timer, lifespan);
+    else greeting_timer = app_timer_register(lifespan, face_greeting_hide, NULL);
+  } else if(greeting_timer != NULL) {
+    app_timer_cancel(greeting_timer);
+  }
+}
+
 void face_greeting_init() {
   // graphics
   GRect bounds = layer_get_bounds(layer_face);
@@ -63,10 +77,7 @@ void face_greeting_init() {
   layer_add_child(layer_face, text_layer_get_layer(greeting_layer));
   
   // TODO: Pre-condition is that there are currenlty no notifications
-  text_layer_set_text(greeting_layer, greetings[rand() % 9]);
-  
-  app_timer_register(5000, face_greeting_hide, NULL);
-  //tick_timer_service_subscribe(MINUTE_UNIT, face_greeting_hide);
+  face_greeting_update(greetings[rand() % 9]);
 }
 
 // time

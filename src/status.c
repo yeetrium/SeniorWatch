@@ -5,6 +5,8 @@ Layer *layer_status;
 TextLayer *text_layer_status;
 InverterLayer *layer_flasher;
 
+AppTimer *status_timer = NULL;
+
 void status_init(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
@@ -36,11 +38,18 @@ void status_update(const char *status) {
   text_layer_set_text(text_layer_status, status);
 }
 
-void status_push_update(const char *status) {
-  window_manager_push(STATUS, false);
-  status_update(status);
+void status_pop() {
+  status_timer = NULL;
+  window_manager_pop(true);
 }
 
-void status_pop() {
-  window_manager_pop(true);
+void status_push_update(const char *status, const int lifespan) {
+  window_manager_push(STATUS, false);
+  status_update(status);
+  if(lifespan > 0) {
+    if(status_timer != NULL) app_timer_reschedule(status_timer, lifespan);
+    else status_timer = app_timer_register(lifespan, status_pop, NULL);
+  } else if(status_timer != NULL) {
+    app_timer_cancel(status_timer);
+  }
 }

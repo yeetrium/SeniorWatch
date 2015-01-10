@@ -11,6 +11,16 @@ bool pressed_down = false;
 
 bool emergency_doubletap = false;
 
+const uint32_t vibes_pattern_double_long[] = { 400, 100, 400 };
+
+void vibes_double_long_pulse() {
+  VibePattern pat = {
+    .durations = vibes_pattern_double_long,
+    .num_segments = ARRAY_LENGTH(vibes_pattern_double_long),
+  };
+  vibes_enqueue_custom_pattern(pat);
+}
+
 void doubletap_end() {
   emergency_doubletap = false;
 }
@@ -31,11 +41,13 @@ void release_handler(ClickRecognizerRef recognizer, void *context) {
   if(pressed_up && pressed_select && pressed_down) {
     if(emergency_doubletap) {
       // call 911
-      status_push_update("Dialing 911...");
+      status_push_update("Dialing 911...", 5000);
+      vibes_double_long_pulse();
       emergency_doubletap = false;
     } else {
-      status_push_update("Emergency message sent!");
+      status_push_update("Emergency message sent!", 5000);
       message_send(EMERGENCY);
+      vibes_double_pulse();
       emergency_doubletap = true;
       app_timer_register(doubletap_interval, doubletap_end, NULL);
     }

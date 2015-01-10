@@ -7,5 +7,5 @@ void status_deinit();
 void status_update(const char *status);
 
 // show it loudly
-void status_push_update();
+void status_push_update(const char *status, const int lifespan);
 void status_pop();
