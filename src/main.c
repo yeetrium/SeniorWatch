@@ -8,6 +8,22 @@
 Window *window_main;
 
 const char *status_default = "Looking good!";
+// TODO: Add real greetings
+const char *greetings[8] = { 
+  "Make sure to stretch!",
+  "Did you take your medication?",
+  "Greeting3",
+  "Greeting4",
+  "Greeting5",
+  "Greeting6",
+  "Greeting7",
+  "Greeting8",
+};
+
+static void tick_handler(struct tm *tick_time, TimeUnits units_change) {
+  // TODO: Pre-condition is that there are currenlty no notifications
+  status_update(greetings[rand() % 9]);
+}
 
 void window_load(Window *window) {
   status_init(window);
@@ -28,6 +44,7 @@ void init() {
     .unload = window_unload
   });
   
+  tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
   input_init(window_main);
   initNotification();
   
