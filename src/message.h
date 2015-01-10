@@ -1,7 +1,10 @@
 #pragma once
   
-#include <pebble.h>
+typedef enum {
+  UP,
+  SELECT,
+  DOWN,
+  EMERGENCY
+} message_type;
 
-void message_init(Window *window);
-void message_deinit();
-void message_update(const char *message);
+void message_send(message_type type);
