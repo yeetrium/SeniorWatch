@@ -1,1 +1,0 @@
-Put iOS app components in this folder.
