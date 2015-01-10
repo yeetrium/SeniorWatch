@@ -1,4 +1,4 @@
-#include <pebble.h>
+#include "notification.h"
 #include "status.h"
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
@@ -10,8 +10,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     static char s_buffer[42];
     
     snprintf(s_buffer, sizeof(s_buffer), "'%s'", t->value->cstring);
-    status_update(s_buffer);
-    status_show();
+    status_push_update(s_buffer);
     vibes_short_pulse();
     
     t = dict_read_next(iterator);

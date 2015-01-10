@@ -1,4 +1,5 @@
 #include "status.h"
+#include "window_manager.h"
   
 Layer *layer_status;
 TextLayer *text_layer_status;
@@ -24,8 +25,6 @@ void status_init(Window *window) {
   text_layer_set_text_alignment(text_layer_status, GTextAlignmentCenter);
   
   layer_add_child(layer_status, text_layer_get_layer(text_layer_status));
-  
-  status_hide();
 }
 
 void status_deinit() {
@@ -37,10 +36,11 @@ void status_update(const char *status) {
   text_layer_set_text(text_layer_status, status);
 }
 
-void status_show() {
-  layer_set_hidden(layer_status, false);
+void status_push_update(const char *status) {
+  window_manager_push(STATUS, false);
+  status_update(status);
 }
 
-void status_hide() {
-  layer_set_hidden(layer_status, true);
+void status_pop() {
+  window_manager_pop(true);
 }

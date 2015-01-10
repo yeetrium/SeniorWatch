@@ -39,13 +39,9 @@ void face_deinit() {
   layer_destroy(layer_face);
 }
 
-void face_show() {
-
-}
-
 // greeting
 
-void face_greeting_hide(struct tm *tick_time, TimeUnits units_changed) {
+void face_greeting_hide() {
   text_layer_set_text(greeting_layer, "");
 }
 
@@ -56,7 +52,7 @@ void face_greeting_init() {
   bounds.origin.x = 5;
   bounds.origin.y = 5;
   bounds.size.w -= 10;
-  bounds.size.h *= 0.1;
+  bounds.size.h *= 0.25;
   
   greeting_layer = text_layer_create(bounds);
   text_layer_set_background_color(greeting_layer, GColorClear);
@@ -69,7 +65,8 @@ void face_greeting_init() {
   // TODO: Pre-condition is that there are currenlty no notifications
   text_layer_set_text(greeting_layer, greetings[rand() % 9]);
   
-  tick_timer_service_subscribe(MINUTE_UNIT, face_greeting_hide);
+  app_timer_register(5000, face_greeting_hide, NULL);
+  //tick_timer_service_subscribe(MINUTE_UNIT, face_greeting_hide);
 }
 
 // time

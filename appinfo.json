@@ -7,20 +7,7 @@
     "longName": "Test",
     "projectType": "native",
     "resources": {
-        "media": [
-		{
-			"menuIcon": true,
-			"type": "png",
-			"name": "IMAGE_MENU_ICON",
-			"file": "images/menu_icon_senior_watch.png"
-		},
-		{
-			"characterRegex": "[:0-9]",
-			"type": "font",
-			"name": "FONT_ROBOTO_BOLD_CONDENSED_SUBSET_40",
-			"file": "fonts/Roboto-BoldCondensed.ttf"
-		}
-		]
+        "media": []
     },
     "shortName": "Test",
     "uuid": "06d855a7-1cc5-4e60-b0e5-cafebd733cf9",

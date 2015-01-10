@@ -1,6 +1,7 @@
 #include "input.h"
 #include "status.h"
 #include "message.h"
+#include "window_manager.h"
   
 const int doubletap_interval = 250;
   
@@ -30,12 +31,10 @@ void release_handler(ClickRecognizerRef recognizer, void *context) {
   if(pressed_up && pressed_select && pressed_down) {
     if(emergency_doubletap) {
       // call 911
-      status_update("Dialing 911...");
-      status_show();
+      status_push_update("Dialing 911...");
       emergency_doubletap = false;
     } else {
-      status_update("Emergency message sent!");
-      status_show();
+      status_push_update("Emergency message sent!");
       message_send(EMERGENCY);
       emergency_doubletap = true;
       app_timer_register(doubletap_interval, doubletap_end, NULL);
@@ -49,15 +48,26 @@ void release_handler(ClickRecognizerRef recognizer, void *context) {
   pressed_up = pressed_select = pressed_down = false;
 }
   
-void click_config_provider(void *context) {
+void click_config_provider_main(void *context) {
+  // Register the ClickHandlers
+  window_raw_click_subscribe(BUTTON_ID_UP, up_press_handler, release_handler, NULL);
+  window_raw_click_subscribe(BUTTON_ID_SELECT, select_press_handler, release_handler, NULL);
+  window_raw_click_subscribe(BUTTON_ID_DOWN, down_press_handler, release_handler, NULL);
+}
+
+void click_config_provider_status(void *context) {
   // Register the ClickHandlers
   window_raw_click_subscribe(BUTTON_ID_UP, up_press_handler, release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_SELECT, select_press_handler, release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_DOWN, down_press_handler, release_handler, NULL);
 }
   
-void input_init(Window *window) {
-  window_set_click_config_provider(window, click_config_provider);
+void input_init_main(Window *window) {
+  window_set_click_config_provider(window, click_config_provider_main);
+}
+
+void input_init_status(Window *window) {
+  window_set_click_config_provider(window, click_config_provider_status);
 }
 
 void input_deinit() {

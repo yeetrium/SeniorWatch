@@ -7,5 +7,5 @@ void status_deinit();
 void status_update(const char *status);
 
 // show it loudly
-void status_show();
-void status_hide();
+void status_push_update();
+void status_pop();
