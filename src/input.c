@@ -1,23 +1,59 @@
 #include "input.h"
+#include "status.h"
 #include "message.h"
   
-void up_click_handler(ClickRecognizerRef recognizer, void *context) {
-  message_send(0);
+const int doubletap_interval = 250;
+  
+bool pressed_up = false;
+bool pressed_select = false;
+bool pressed_down = false;
+
+bool emergency_doubletap = false;
+
+void doubletap_end() {
+  emergency_doubletap = false;
+}
+  
+void up_press_handler(ClickRecognizerRef recognizer, void *context) {
+  pressed_up = true;
 }
 
-void select_click_handler(ClickRecognizerRef recognizer, void *context) {
-  message_send(1);
+void select_press_handler(ClickRecognizerRef recognizer, void *context) {
+  pressed_select = true;
 }
 
-void down_click_handler(ClickRecognizerRef recognizer, void *context) {
-  message_send(2);
+void down_press_handler(ClickRecognizerRef recognizer, void *context) {
+  pressed_down = true;
+}
+
+void release_handler(ClickRecognizerRef recognizer, void *context) {
+  if(pressed_up && pressed_select && pressed_down) {
+    if(emergency_doubletap) {
+      // call 911
+      status_update("Dialing 911...");
+      status_show();
+      emergency_doubletap = false;
+    } else {
+      status_update("Emergency message sent!");
+      status_show();
+      message_send(EMERGENCY);
+      emergency_doubletap = true;
+      app_timer_register(doubletap_interval, doubletap_end, NULL);
+    }
+  } else {
+    if(pressed_up)          message_send(UP);
+    else if(pressed_select) message_send(SELECT);
+    else if(pressed_down)   message_send(DOWN);
+  }
+  
+  pressed_up = pressed_select = pressed_down = false;
 }
   
 void click_config_provider(void *context) {
   // Register the ClickHandlers
-  window_single_click_subscribe(BUTTON_ID_UP, up_click_handler);
-  window_single_click_subscribe(BUTTON_ID_SELECT, select_click_handler);
-  window_single_click_subscribe(BUTTON_ID_DOWN, down_click_handler);
+  window_raw_click_subscribe(BUTTON_ID_UP, up_press_handler, release_handler, NULL);
+  window_raw_click_subscribe(BUTTON_ID_SELECT, select_press_handler, release_handler, NULL);
+  window_raw_click_subscribe(BUTTON_ID_DOWN, down_press_handler, release_handler, NULL);
 }
   
 void input_init(Window *window) {

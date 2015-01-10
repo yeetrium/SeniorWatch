@@ -11,6 +11,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     
     snprintf(s_buffer, sizeof(s_buffer), "'%s'", t->value->cstring);
     status_update(s_buffer);
+    status_show();
     vibes_short_pulse();
     
     t = dict_read_next(iterator);
@@ -29,15 +30,13 @@ static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
 
-void send_connect_event_to_phone() {
+void send_connect_event_to_phone(char *message) {
 	DictionaryIterator *iter;
 	app_message_outbox_begin(&iter);
 	
 	if(iter == NULL) {
 		return;
 	}
-	
-	static char message[10] = "Fuck You";
 	
 	dict_write_cstring(iter, 0, message);
 	dict_write_end(iter);
@@ -50,6 +49,4 @@ void initNotification(void) {
   app_message_register_inbox_dropped(inbox_dropped_callback);
   app_message_register_outbox_failed(outbox_failed_callback);
   app_message_register_outbox_sent(outbox_sent_callback);
-	
-	send_connect_event_to_phone();
 }

@@ -1,6 +1,7 @@
 #include <pebble.h>
   
 #include "message.h"
+#include "face.h"
 #include "status.h"
 #include "input.h"
 #include "notification.h"
@@ -17,20 +18,7 @@ GRect UPPER_TO_RECT = ConstantGRect(0, 5, 144, 168-5);
 GRect LOWER_TO_RECT = ConstantGRect(0, 112, 144, 168-112);
 
 #define ANIMATION_DURATION_IN_MS 1500
-
-const char *status_default = "Looking good!";
-// TODO: Add real greetings
-const char *greetings[8] = { 
-  "Make sure to stretch!",
-  "Did you take your medication?",
-  "Greeting3",
-  "Greeting4",
-  "Greeting5",
-  "Greeting6",
-  "Greeting7",
-  "Greeting8",
-};
-
+  
 static void init_animations() {
   
   Layer *layer = text_layer_get_layer(text_time_layer);
@@ -69,7 +57,7 @@ static void schedule_animation(struct tm *tick_time) {
 }
 
 
-static void tick_handler(struct tm *tick_time, TimeUnits units_change) {
+static void tick_handler_test(struct tm *tick_time, TimeUnits units_change) {
   
   static char time_text[] = "00:00";
 
@@ -77,14 +65,11 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_change) {
   text_layer_set_text(text_time_layer, time_text);
 
   schedule_animation(tick_time);
-  
-  // TODO: Pre-condition is that there are currenlty no notifications
-  status_update(greetings[rand() % 9]);
 }
 
 void window_load(Window *window) {
+  face_init(window);
   status_init(window);
-  status_update(status_default);
 }
 
 void window_unload(Window *window) {
@@ -112,7 +97,8 @@ void init() {
 
   init_animations();
   
-  tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+  tick_timer_service_subscribe(MINUTE_UNIT, tick_handler_test);
+  
   input_init(window_main);
   initNotification();
   
