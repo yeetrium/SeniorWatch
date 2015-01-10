@@ -11,6 +11,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
     
     snprintf(s_buffer, sizeof(s_buffer), "'%s'", t->value->cstring);
     status_update(s_buffer);
+    vibes_short_pulse();
     
     t = dict_read_next(iterator);
   }
