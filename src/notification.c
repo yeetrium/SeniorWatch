@@ -1,10 +1,19 @@
 #include <pebble.h>
 #include "status.h"
-  
+
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Message received!");
   Tuple *t = dict_read_first(iterator);
-  status_update(t->value->cstring);
+  
+  while (t != NULL) {
+    // Size of input message
+    static char s_buffer[42];
+    
+    snprintf(s_buffer, sizeof(s_buffer), "'%s'", t->value->cstring);
+    status_update(s_buffer);
+    
+    t = dict_read_next(iterator);
+  }
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
