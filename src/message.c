@@ -13,15 +13,15 @@ char *message_emergency = "Help me NOW!";
 void message_send(message_type type) {
   switch(type) {
     case UP:
-      //face_greeting_update("Sending 'hungry' message...");
+      face_greeting_update("Sending 'hungry' message...");
       send_connect_event_to_phone(message_up);
       break;
     case SELECT:
-      //face_greeting_update("Sending 'help' message...");
+      face_greeting_update("Sending 'help' message...");
       send_connect_event_to_phone(message_select);
       break;
     case DOWN:
-      //face_greeting_update("Sending 'medications' message...");
+      face_greeting_update("Sending 'medications' message...");
       send_connect_event_to_phone(message_down);
       break;
     case EMERGENCY:

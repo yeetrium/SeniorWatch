@@ -1,57 +1,35 @@
-#include <pebble.h>
-  
+#include "notification.h"
 #include "status.h"
-  
-#define RESPONSE_NOTIFICATION_KEY 0
-#define GENERAL_NOTIFICATION_KEY 1
-#define PHONE_CALL_KEY 2
+#include "face.h"
 
-static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
+void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   APP_LOG(APP_LOG_LEVEL_ERROR, "Message received!");
-  Tuple *data = dict_read_first(iterator);
+  Tuple *t = dict_read_first(iterator);
   
-  while (data != NULL) {
-    // Size and storage of input message
-    // match size with char limit from
-    // companion application
+  while (t != NULL) {
+    // Size of input message
     static char s_buffer[42];
     
-    // Switch t->key to manage
-    // different types of messages?
-    switch (data->key) {
-      // Optimize calls to status_udpate()
-      // by updating status either way?
-      case RESPONSE_NOTIFICATION_KEY:
-        // TODO: Require a response from watch user
-        break;
-      case GENERAL_NOTIFICATION_KEY:
-        snprintf(s_buffer, sizeof(s_buffer), "'%s'", data->value->cstring);
-        status_update(s_buffer);
-        vibes_short_pulse();
-        break;
-      case PHONE_CALL_KEY:
-        // TODO: Vibrate a while or
-        // until phone call is accepted
-        break;
-      default:
-        // Unknown key
-        break;
-    }
+    snprintf(s_buffer, sizeof(s_buffer), "'%s'", t->value->cstring);
+    status_push_update(s_buffer, 0);
+    vibes_short_pulse();
     
-    data = dict_read_next(iterator);
+    t = dict_read_next(iterator);
   }
 }
 
-static void inbox_dropped_callback(AppMessageResult reason, void *context) {
+void inbox_dropped_callback(AppMessageResult reason, void *context) {
   APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
 }
 
-static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
+void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
   APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+  face_greeting_update("Sending message failed.");
 }
 
-static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
-  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
+  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+  face_greeting_update("Sent message!");
 }
 
 void send_connect_event_to_phone(char *message) {
@@ -62,7 +40,6 @@ void send_connect_event_to_phone(char *message) {
 		return;
 	}
 	
-  // Replace 0 with keys
 	dict_write_cstring(iter, 0, message);
 	dict_write_end(iter);
 	
