@@ -1,24 +1,9 @@
 #include "menu.h"
 #include "window_manager.h"
+#include "task.h"
 
 MenuLayer *menu_layer;
 bool is_visible = false;
-
-// Currently populated with random data
-// pull data from server and update
-// in final release
-char *task_list[10][2] = {
-  {"1:00pm", "Take medication"},
-  {"2:00pm", "Go to bed"},
-  {"3:00pm", "Go to bed"},
-  {"4:00pm", "Go to bed"},
-  {"5:00pm", "Go to bed"},
-  {"6:00pm", "Go to bed"},
-  {"7:00pm", "Go to bed"},
-  {"8:00pm", "Go to bed"},
-  {"9:00pm", "Go to bed"},
-  {"10:00pm", "Go to bed"},
-};
 
 void menu_init(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
@@ -85,45 +70,35 @@ void menu_draw_row_callback(GContext *ctx, const Layer *cell_layer, MenuIndex *c
     case 0:
       switch (cell_index->row) {
         case 0:
-          menu_cell_basic_draw(ctx, cell_layer, task_list[cell_index->row][0], task_list[cell_index->row][1], NULL);
+          menu_cell_basic_draw(ctx, cell_layer, task_time_get_row(0), task_title_get_row(0), NULL);
           break;
-        
         case 1:
-          menu_cell_basic_draw(ctx, cell_layer, task_list[cell_index->row][0], task_list[cell_index->row][1], NULL);
-          break;
-        
+          menu_cell_basic_draw(ctx, cell_layer, task_time_get_row(1), task_title_get_row(1), NULL);
+          break;      
         case 2:
-          menu_cell_basic_draw(ctx, cell_layer, task_list[cell_index->row][0], task_list[cell_index->row][1], NULL);
+          menu_cell_basic_draw(ctx, cell_layer, task_time_get_row(2), task_title_get_row(2), NULL);
           break;
-        
         case 3:
-          menu_cell_basic_draw(ctx, cell_layer, task_list[cell_index->row][0], task_list[cell_index->row][1], NULL);
+          menu_cell_basic_draw(ctx, cell_layer, task_time_get_row(3), task_title_get_row(3), NULL);
           break;
-        
         case 4:
-          menu_cell_basic_draw(ctx, cell_layer, task_list[cell_index->row][0], task_list[cell_index->row][1], NULL);
+          menu_cell_basic_draw(ctx, cell_layer, task_time_get_row(4), task_title_get_row(4), NULL);
           break;
-        
         case 5:
-          menu_cell_basic_draw(ctx, cell_layer, task_list[cell_index->row][0], task_list[cell_index->row][1], NULL);
+          menu_cell_basic_draw(ctx, cell_layer, task_time_get_row(5), task_title_get_row(5), NULL);
           break;
-        
         case 6:
-          menu_cell_basic_draw(ctx, cell_layer, task_list[cell_index->row][0], task_list[cell_index->row][1], NULL);
+          menu_cell_basic_draw(ctx, cell_layer, task_time_get_row(6), task_title_get_row(6), NULL);
           break;
-        
         case 7:
-          menu_cell_basic_draw(ctx, cell_layer, task_list[cell_index->row][0], task_list[cell_index->row][1], NULL);
+          menu_cell_basic_draw(ctx, cell_layer, task_time_get_row(7), task_title_get_row(7), NULL);
           break;
-        
         case 8:
-          menu_cell_basic_draw(ctx, cell_layer, task_list[cell_index->row][0], task_list[cell_index->row][1], NULL);
+          menu_cell_basic_draw(ctx, cell_layer, task_time_get_row(8), task_title_get_row(8), NULL);
           break;
-        
         case 9:
-          menu_cell_basic_draw(ctx, cell_layer, task_list[cell_index->row][0], task_list[cell_index->row][1], NULL);
+          menu_cell_basic_draw(ctx, cell_layer, task_time_get_row(9), task_title_get_row(9), NULL);
           break;
-        
         default:
           // Non-existent row
           break;
@@ -161,9 +136,4 @@ void menu_toggle(void) {
   is_visible = !is_visible;
   if (is_visible) layer_set_hidden(menu_layer_get_layer(menu_layer), false);
   else layer_set_hidden(menu_layer_get_layer(menu_layer), true);
-}
-
-void menu_update_row(const int row, char *title, char *subtitle) {
-  task_list[row][0] = title;
-  task_list[row][1] = subtitle;
 }

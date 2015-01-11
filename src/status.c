@@ -1,5 +1,6 @@
 #include "status.h"
 #include "window_manager.h"
+#include "task.h"
   
 Layer *layer_status;
 ActionBarLayer *action_bar;
@@ -54,5 +55,6 @@ void status_push_update(const char *status) {
 }
 
 void status_pop() {
+  task_timer_off();
   window_manager_pop(true);
 }

@@ -5,6 +5,7 @@
 #include "status.h"
 #include "input.h"
 #include "menu.h"
+#include "task.h"
 
 Window *window_main;
 Window *window_status;
@@ -32,6 +33,7 @@ char *trimwhitespace(char *str)
 
 void tick_handler(struct tm *tick_time, TimeUnits units_change) {
   static char s_time_buffer[16];
+  static char s_time_daynight_buffer[16];
   static char s_date_buffer[16];
   
   // Displays the current time
@@ -42,10 +44,10 @@ void tick_handler(struct tm *tick_time, TimeUnits units_change) {
   }
   
   strftime(s_date_buffer, sizeof(s_date_buffer), "%a %b %e", tick_time);
-  
-  
-  
   face_time_update(trimwhitespace(s_time_buffer), s_date_buffer);
+  
+  strftime(s_time_daynight_buffer, sizeof(s_time_daynight_buffer), "%l:%M%p", tick_time);
+  task_check(trimwhitespace(s_time_daynight_buffer));
   
   // Add each window's update function if needed
 }

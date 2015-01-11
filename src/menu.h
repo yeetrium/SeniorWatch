@@ -16,4 +16,3 @@ void menu_pop(void);
 void menu_scroll_up(void);
 void menu_scroll_down(void);
 void menu_toggle(void);
-void menu_update_row(const int row, char *title, char *subtitle);
