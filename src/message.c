@@ -25,7 +25,7 @@ void message_send(message_type type) {
       send_connect_event_to_phone(GENERAL_NOTIFICATION_KEY, message_down);
       break;
     case EMERGENCY:
-      send_connect_event_to_phone(RESPONSE_NOTIFICATION_KEY, message_emergency);
+      send_connect_event_to_phone(GENERAL_NOTIFICATION_KEY, message_emergency);
       break;
   }
 }

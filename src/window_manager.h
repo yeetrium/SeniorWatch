@@ -8,6 +8,8 @@ typedef enum {
   MENU,
 } window_type;
 
+window_type window_manager_get_top_type();
+
 void window_manager_init();
 void window_manager_deinit();
 

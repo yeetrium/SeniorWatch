@@ -59,7 +59,7 @@ void face_greeting_init() {
   bounds.origin.x = 5;
   bounds.origin.y = 5;
   bounds.size.w -= 10;
-  bounds.size.h *= 0.25;
+  bounds.size.h *= 0.3;
   
   greeting_layer = text_layer_create(bounds);
   text_layer_set_background_color(greeting_layer, GColorClear);

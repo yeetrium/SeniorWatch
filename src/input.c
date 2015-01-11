@@ -1,6 +1,7 @@
 #include "input.h"
 #include "status.h"
 #include "message.h"
+#include "notification.h"
 #include "menu.h"
   
 const int doubletap_interval = 250;
@@ -23,6 +24,9 @@ void vibes_double_long_pulse() {
 
 void doubletap_end() {
   emergency_doubletap = false;
+  if(!emergency_doubletap) {
+    message_send(EMERGENCY);
+  }
 }
   
 void up_press_handler(ClickRecognizerRef recognizer, void *context) {
@@ -41,12 +45,11 @@ void release_handler(ClickRecognizerRef recognizer, void *context) {
   if(pressed_up && pressed_select && pressed_down) {
     if(emergency_doubletap) {
       // call 911
-      status_push_update("Dialing 911...", 5000);
+      status_push_update("Dialing 911...");
       vibes_double_long_pulse();
-      emergency_doubletap = false;
+      send_connect_event_to_phone(PHONE_CALL_KEY, "911");
     } else {
-      status_push_update("Emergency message sent!", 5000);
-      message_send(EMERGENCY);
+      status_push_update("Sending emergency message...");
       vibes_double_pulse();
       emergency_doubletap = true;
       app_timer_register(doubletap_interval, doubletap_end, NULL);
@@ -65,6 +68,12 @@ void menu_release_handler(ClickRecognizerRef recognizer, void *context) {
   else if(pressed_down)   menu_scroll_down();
   
   pressed_up = pressed_select = pressed_down = false;
+}
+
+void status_release_handler(ClickRecognizerRef recognizer, void *context) {
+  if(pressed_select) {
+    status_pop();
+  }
 }
   
 void click_config_provider_main(void *context) {

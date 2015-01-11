@@ -23,6 +23,18 @@ void tick_handler(struct tm *tick_time, TimeUnits units_change) {
   // Add each window's update function if needed
 }
 
+window_type window_manager_get_top_type() {
+  Window *temp = window_stack_get_top_window();
+  
+  if(temp == window_status) {
+    return STATUS;
+  } else if(temp == window_menu) {
+    return MENU;
+  }
+  
+  return FACE;
+}
+
 void window_manager_push(window_type type, bool animated) {
   switch(type) {
     case FACE:
