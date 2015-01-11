@@ -37,6 +37,10 @@ void status_init(Window *window) {
   layer_add_child(layer_status, text_layer_get_layer(text_layer_status));
 }
 
+void status_input_subscribe(ClickConfigProvider click_config_provider) {
+  action_bar_layer_set_click_config_provider(action_bar, click_config_provider);
+}
+
 void status_deinit() {
   text_layer_destroy(text_layer_status);
   layer_destroy(layer_status);

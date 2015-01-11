@@ -25,7 +25,9 @@ void vibes_double_long_pulse() {
 void doubletap_end() {
   emergency_doubletap = false;
   if(!emergency_doubletap) {
+    status_push_update("Sending emergency message...");
     message_send(EMERGENCY);
+    vibes_double_pulse();
   }
 }
   
@@ -49,8 +51,6 @@ void release_handler(ClickRecognizerRef recognizer, void *context) {
       vibes_double_long_pulse();
       send_connect_event_to_phone(PHONE_CALL_KEY, "911");
     } else {
-      status_push_update("Sending emergency message...");
-      vibes_double_pulse();
       emergency_doubletap = true;
       app_timer_register(doubletap_interval, doubletap_end, NULL);
     }
@@ -71,6 +71,7 @@ void menu_release_handler(ClickRecognizerRef recognizer, void *context) {
 }
 
 void status_release_handler(ClickRecognizerRef recognizer, void *context) {
+  APP_LOG(APP_LOG_LEVEL_INFO, "STATUS ACTION");
   if(pressed_select) {
     status_pop();
   }
@@ -81,6 +82,7 @@ void click_config_provider_main(void *context) {
   window_raw_click_subscribe(BUTTON_ID_UP, up_press_handler, release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_SELECT, select_press_handler, release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_DOWN, down_press_handler, release_handler, NULL);
+  APP_LOG(APP_LOG_LEVEL_INFO, "kind of");
 }
 
 void click_config_provider_status(void *context) {
@@ -88,6 +90,8 @@ void click_config_provider_status(void *context) {
   window_raw_click_subscribe(BUTTON_ID_UP, up_press_handler, status_release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_SELECT, select_press_handler, status_release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_DOWN, down_press_handler, status_release_handler, NULL);
+  
+  APP_LOG(APP_LOG_LEVEL_INFO, "Subscriptions baby");
 }
 
 void click_config_provider_menu(void *context) {
@@ -103,6 +107,7 @@ void input_init_main(Window *window) {
 
 void input_init_status(Window *window) {
   window_set_click_config_provider(window, click_config_provider_status);
+  status_input_subscribe(click_config_provider_status);
 }
 
 void input_init_menu(Window *window) {

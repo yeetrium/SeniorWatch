@@ -36,6 +36,8 @@ window_type window_manager_get_top_type() {
 }
 
 void window_manager_push(window_type type, bool animated) {
+  if(window_manager_get_top_type() == type) return;
+  
   switch(type) {
     case FACE:
       window_stack_push(window_main, animated);
@@ -59,6 +61,7 @@ void window_manager_() {
 
 void window_load_main(Window *window) {
   face_init(window);
+  input_init_main(window_main);
 }
 
 void window_unload_main(Window *window) {
@@ -67,6 +70,7 @@ void window_unload_main(Window *window) {
 
 void window_load_status(Window *window) {
   status_init(window);
+  input_init_status(window_status);
 }
 
 void window_unload_status(Window *window) {
@@ -75,6 +79,7 @@ void window_unload_status(Window *window) {
 
 void window_load_menu(Window *window) {
   menu_init(window);
+  input_init_menu(window_menu);
 }
 
 void window_unload_menu(Window *window) {
@@ -118,10 +123,6 @@ void window_manager_init() {
   window_create_main();
   window_create_status();
   window_create_menu();
-  
-  input_init_main(window_main);
-  input_init_status(window_status);
-  input_init_menu(window_menu);
   
   window_stack_push(window_main, true);
   
