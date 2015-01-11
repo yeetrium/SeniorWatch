@@ -14,18 +14,18 @@ void message_send(message_type type) {
   switch(type) {
     case UP:
       face_greeting_update("Sending 'hungry' message...");
-      send_connect_event_to_phone(message_up);
+      send_connect_event_to_phone(GENERAL_NOTIFICATION_KEY, message_up);
       break;
     case SELECT:
       face_greeting_update("Sending 'help' message...");
-      send_connect_event_to_phone(message_select);
+      send_connect_event_to_phone(GENERAL_NOTIFICATION_KEY, message_select);
       break;
     case DOWN:
       face_greeting_update("Sending 'medications' message...");
-      send_connect_event_to_phone(message_down);
+      send_connect_event_to_phone(GENERAL_NOTIFICATION_KEY, message_down);
       break;
     case EMERGENCY:
-      send_connect_event_to_phone(message_emergency);
+      send_connect_event_to_phone(RESPONSE_NOTIFICATION_KEY, message_emergency);
       break;
   }
 }

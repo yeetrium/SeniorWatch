@@ -68,6 +68,7 @@ void face_greeting_init() {
   text_layer_set_text_alignment(greeting_layer, GTextAlignmentLeft);
   
   layer_add_child(layer_face, text_layer_get_layer(greeting_layer));
+  srand(time(NULL));
   
   // TODO: Pre-condition is that there are currenlty no notifications
   face_greeting_update(greetings[rand() % 9]);
