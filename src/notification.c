@@ -1,9 +1,12 @@
+#include <string.h>
+  
 #include "notification.h"
 #include "status.h"
 #include "face.h"
 #include "window_manager.h"
 #include "menu.h"
-#include "task.h"
+  
+#include "jsmn.h"
   
 notification_key expected_key;
 
@@ -13,7 +16,7 @@ void inbox_received_callback(DictionaryIterator *iterator, void *context) {
   
   while (data != NULL) {
     // Size of input message
-    static char s_buffer[42];
+    static char s_buffer[255];
     
     switch (data->key) {
       case UNUSABLE_NOTIFICATION_KEY:
@@ -23,6 +26,8 @@ void inbox_received_callback(DictionaryIterator *iterator, void *context) {
         APP_LOG(APP_LOG_LEVEL_INFO, "GENERAL_KEY");
         snprintf(s_buffer, sizeof(s_buffer), "'%s'", data->value->cstring);
         status_push_update(s_buffer);
+        APP_LOG(APP_LOG_LEVEL_INFO, s_buffer);
+        
         vibes_short_pulse();
         break;
       case RESPONSE_NOTIFICATION_KEY:
@@ -36,41 +41,35 @@ void inbox_received_callback(DictionaryIterator *iterator, void *context) {
         break;
       case UPDATE_TASK_KEY:
         APP_LOG(APP_LOG_LEVEL_INFO, "UPDATE_TASK_KEY");
-        //int counter = 0;
-        char title[42];
-        char subtitle[42];
-        data = dict_read_next(iterator);
-        
-        /*
-        
-        for(int i=0; *string)
-        
-        */
+        // TODO: Create a 2d array of strings
+        // from data->value
+        //menu_update()
       
-        //while (data != NULL) {
-          //strcpy(title, data->value->cstring);
-          memcpy(title, data->value->cstring, strlen(data->value->cstring) + 1);
-          APP_LOG(APP_LOG_LEVEL_INFO, "Converted first string");
-          //APP_LOG(APP_LOG_LEVEL_INFO, data->value->cstring);
-          //snprintf(title, sizeof(title), "'%s'", data->value->cstring);
-          data = dict_read_next(iterator);
-          //strcpy(subtitle, data->value->cstring);
-          memcpy(subtitle, data->value->cstring, strlen(data->value->cstring) + 1);
-          APP_LOG(APP_LOG_LEVEL_INFO, "Converted second string");
-          //APP_LOG(APP_LOG_LEVEL_INFO, data->value->cstring);
-          //snprintf(subtitle, sizeof(subtitle), "'%s'", data->value->cstring);
-          //menu_update_row(0, title2, subtitle2);
-          //APP_LOG(APP_LOG_LEVEL_INFO, title);
-          //APP_LOG(APP_LOG_LEVEL_INFO, subtitle);
-          task_update_row(1, title, subtitle);
-          APP_LOG(APP_LOG_LEVEL_INFO, "Updated");
-          //++counter;
-          
-          //data = dict_read_next(iterator);
-          //if (data == NULL) return;
-        //}
-        //break;
-        return;
+        jsmn_parser parser;
+
+        jsmn_init(&parser);
+      
+        jsmntok_t tokens[32];
+        jsmnerr_t r;
+      
+        char *temp = data->value->cstring;
+      
+
+        r = jsmn_parse(&parser, temp, tokens, 32);
+        char testBuffer[42];
+      if(r >= 0) {
+          jsmntok_t key = tokens[1];
+          unsigned int length = key.end - key.start;
+          status_push_update("first");
+          snprintf(testBuffer, sizeof(testBuffer), "'%u'", length);
+          status_push_update(testBuffer);
+          char keyString[length + 1];    
+           memcpy(keyString, &temp[key.start], length);
+          keyString[length] = '\0';
+          //status_push_update(keyString);
+        }
+        
+        break;
     }
       
     data = dict_read_next(iterator);
