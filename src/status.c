@@ -5,6 +5,7 @@ Layer *layer_status;
 ActionBarLayer *action_bar;
 TextLayer *text_layer_status;
 InverterLayer *layer_flasher;
+GBitmap *icon_bitmap;
 
 AppTimer *status_timer = NULL;
 
@@ -27,9 +28,11 @@ void status_init(Window *window) {
   text_layer_set_text_color(text_layer_status, GColorBlack);
   text_layer_set_text_alignment(text_layer_status, GTextAlignmentCenter);
   
+  icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_CHECKMARK);
+  
   action_bar = action_bar_layer_create();
   action_bar_layer_add_to_window(action_bar, window);
-  //action_bar_layer_set_icon(action_bar, BUTTON_ID_UP, &my_icon_previous);
+  action_bar_layer_set_icon(action_bar, BUTTON_ID_SELECT, icon_bitmap);
   
   layer_add_child(layer_status, text_layer_get_layer(text_layer_status));
 }

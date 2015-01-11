@@ -7,7 +7,13 @@
     "longName": "Test",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "file": "images/checkmark.png",
+                "name": "CHECKMARK",
+                "type": "png"
+            }
+        ]
     },
     "shortName": "Test",
     "uuid": "06d855a7-1cc5-4e60-b0e5-cafebd733cf9",
