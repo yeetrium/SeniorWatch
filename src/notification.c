@@ -2,6 +2,7 @@
 #include "status.h"
 #include "face.h"
 #include "window_manager.h"
+#include "menu.h"
   
 notification_key expected_key;
 
@@ -30,6 +31,12 @@ void inbox_received_callback(DictionaryIterator *iterator, void *context) {
         break;
       case PHONE_CALL_KEY:
         APP_LOG(APP_LOG_LEVEL_INFO, "PHONE_CALL_KEY");
+        break;
+      case UPDATE_TASK_KEY:
+        APP_LOG(APP_LOG_LEVEL_INFO, "UPDATE_TASK_KEY");
+        // TODO: Create a 2d array of strings
+        // from data->value
+        //menu_update()
         break;
     }
       
@@ -65,6 +72,9 @@ void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reaso
     case PHONE_CALL_KEY:
       APP_LOG(APP_LOG_LEVEL_INFO, "PHONE_CALL_KEY");
       response = "Phone call request failed.";
+      break;
+    case UPDATE_TASK_KEY:
+      APP_LOG(APP_LOG_LEVEL_INFO, "UPDATE_TASK_KEY");
       break;
   }
   
@@ -106,6 +116,9 @@ void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
     case PHONE_CALL_KEY:
       APP_LOG(APP_LOG_LEVEL_INFO, "PHONE_CALL_KEY");
       response = "Phone call request sent!";
+      break;
+    case UPDATE_TASK_KEY:
+      APP_LOG(APP_LOG_LEVEL_INFO, "UPDATE_TASK_KEY");
       break;
   }
   

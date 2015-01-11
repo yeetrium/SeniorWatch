@@ -10,15 +10,18 @@ Window *window_menu;
 
 void tick_handler(struct tm *tick_time, TimeUnits units_change) {
   static char s_time_buffer[16];
+  static char s_date_buffer[16];
   
   // Displays the current time
   if (clock_is_24h_style()) {
-    strftime(s_time_buffer, sizeof(s_time_buffer), "%H:%M", tick_time);
+    strftime(s_time_buffer, sizeof(s_time_buffer), "%k:%M %p", tick_time);
   } else {
-    strftime(s_time_buffer, sizeof(s_time_buffer), "%I:%M", tick_time);
+    strftime(s_time_buffer, sizeof(s_time_buffer), "%l:%M %p", tick_time);
   }
   
-  face_time_update(s_time_buffer);
+  strftime(s_date_buffer, sizeof(s_date_buffer), "%a %b %e", tick_time);
+  
+  face_time_update(s_time_buffer, s_date_buffer);
   
   // Add each window's update function if needed
 }
@@ -94,7 +97,7 @@ void window_create_main() {
     .unload = window_unload_main
   });
   
-  window_set_background_color(window_main, GColorWhite);
+  window_set_background_color(window_main, GColorBlack);
 }
 
 void window_create_status() {
@@ -105,7 +108,7 @@ void window_create_status() {
     .unload = window_unload_status
   });
   
-  window_set_background_color(window_status, GColorWhite);
+  window_set_background_color(window_status, GColorBlack);
 }
 
 void window_create_menu() {

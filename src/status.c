@@ -25,7 +25,7 @@ void status_init(Window *window) {
   text_layer_status = text_layer_create(bounds);
   text_layer_set_background_color(text_layer_status, GColorClear);
   text_layer_set_font(text_layer_status, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
-  text_layer_set_text_color(text_layer_status, GColorBlack);
+  text_layer_set_text_color(text_layer_status, GColorWhite);
   text_layer_set_text_alignment(text_layer_status, GTextAlignmentCenter);
   
   icon_bitmap = gbitmap_create_with_resource(RESOURCE_ID_CHECKMARK);

@@ -2,6 +2,7 @@
   
 Layer *layer_face;
 TextLayer *time_layer;
+TextLayer *date_layer;
 TextLayer *greeting_layer;
 
 AppTimer *greeting_timer;
@@ -64,7 +65,7 @@ void face_greeting_init() {
   greeting_layer = text_layer_create(bounds);
   text_layer_set_background_color(greeting_layer, GColorClear);
   text_layer_set_font(greeting_layer, fonts_get_system_font(FONT_KEY_GOTHIC_18));
-  text_layer_set_text_color(greeting_layer, GColorBlack);
+  text_layer_set_text_color(greeting_layer, GColorWhite);
   text_layer_set_text_alignment(greeting_layer, GTextAlignmentLeft);
   
   layer_add_child(layer_face, text_layer_get_layer(greeting_layer));
@@ -78,19 +79,27 @@ void face_time_init() {
   // graphics
   GRect bounds = layer_get_bounds(layer_face);
   
-  bounds.origin.x = 5;
   bounds.origin.y = bounds.size.h * 0.5 - bounds.size.h * 0.15;
-  bounds.size.w -= 10;
-  bounds.size.h *= 0.3;
+  bounds.size.h *= 0.35;
   
   time_layer = text_layer_create(bounds);
   text_layer_set_background_color(time_layer, GColorClear);
-  text_layer_set_font(time_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
-  text_layer_set_text_color(time_layer, GColorBlack);
+  text_layer_set_font(time_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
+  text_layer_set_text_color(time_layer, GColorWhite);
   text_layer_set_text_alignment(time_layer, GTextAlignmentCenter);
   layer_add_child(layer_face, text_layer_get_layer(time_layer));
+  
+  bounds.origin.y += bounds.size.h + 5;
+  
+  date_layer = text_layer_create(bounds);
+  text_layer_set_background_color(date_layer, GColorClear);
+  text_layer_set_font(date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28));
+  text_layer_set_text_color(date_layer, GColorWhite);
+  text_layer_set_text_alignment(date_layer, GTextAlignmentCenter);
+  layer_add_child(layer_face, text_layer_get_layer(date_layer));
 }
 
-void face_time_update(const char* time_buffer) {
+void face_time_update(const char* time_buffer, const char* date_buffer) {
   text_layer_set_text(time_layer, time_buffer);
+  text_layer_set_text(date_layer, date_buffer);
 }
