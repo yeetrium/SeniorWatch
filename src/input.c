@@ -26,6 +26,11 @@ void doubletap_end() {
   emergency_doubletap = false;
   if(!emergency_doubletap) {
     status_push_update("Sending emergency message...");
+    s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_EMSRIGHT);
+    s_background_layer = bitmap_layer_create(GRect(0, 0, 32, 32));
+    bitmap_layer_set_alignment(s_background_layer, GAlignTopRight);
+    bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+    layer_add_child(window_get_root_layer(window_stack_get_top_window()), bitmap_layer_get_layer(s_background_layer));
     message_send(EMERGENCY);
     vibes_double_pulse();
   }
@@ -48,6 +53,11 @@ void release_handler(ClickRecognizerRef recognizer, void *context) {
     if(emergency_doubletap) {
       // call 911
       status_push_update("Dialing 911...");
+      s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_NINEOO);
+      s_background_layer = bitmap_layer_create(GRect(0, 0, 32, 32));
+      bitmap_layer_set_alignment(s_background_layer, GAlignTopRight);
+      bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
+      layer_add_child(window_get_root_layer(window_stack_get_top_window()), bitmap_layer_get_layer(s_background_layer));
       vibes_double_long_pulse();
       send_connect_event_to_phone(PHONE_CALL_KEY, "911");
     } else {
@@ -73,6 +83,12 @@ void menu_release_handler(ClickRecognizerRef recognizer, void *context) {
 void status_release_handler(ClickRecognizerRef recognizer, void *context) {
   APP_LOG(APP_LOG_LEVEL_INFO, "STATUS ACTION");
   if(pressed_select) {
+    // Destroy GBitmap
+    gbitmap_destroy(s_background_bitmap);
+
+    // Destroy BitmapLayer
+    bitmap_layer_destroy(s_background_layer);
+
     status_pop();
   }
 }

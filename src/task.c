@@ -46,7 +46,7 @@ void task_timer_off() {
     }
     
     char alert[] = "Your client has responded to a task.";
-    send_connect_event_to_phone(RESPONSE_NOTIFICATION_KEY, alert);
+    send_connect_event_to_phone(GENERAL_NOTIFICATION_KEY, alert);
     APP_LOG(APP_LOG_LEVEL_INFO, "Msg sent");
   }
 }
