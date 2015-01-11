@@ -1,7 +1,7 @@
 #include "input.h"
 #include "status.h"
 #include "message.h"
-#include "window_manager.h"
+#include "menu.h"
   
 const int doubletap_interval = 250;
   
@@ -53,9 +53,16 @@ void release_handler(ClickRecognizerRef recognizer, void *context) {
     }
   } else {
     if(pressed_up)          message_send(UP);
-    else if(pressed_select) message_send(SELECT);
+    else if(pressed_select) menu_push_update();
     else if(pressed_down)   message_send(DOWN);
   }
+  
+  pressed_up = pressed_select = pressed_down = false;
+}
+
+void menu_release_handler(ClickRecognizerRef recognizer, void *context) {
+  if(pressed_up)          menu_scroll_up();
+  else if(pressed_down)   menu_scroll_down();
   
   pressed_up = pressed_select = pressed_down = false;
 }
@@ -73,6 +80,13 @@ void click_config_provider_status(void *context) {
   window_raw_click_subscribe(BUTTON_ID_SELECT, select_press_handler, release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_DOWN, down_press_handler, release_handler, NULL);
 }
+
+void click_config_provider_menu(void *context) {
+  // Register the ClickHandlers
+  window_raw_click_subscribe(BUTTON_ID_UP, up_press_handler, menu_release_handler, NULL);
+  window_raw_click_subscribe(BUTTON_ID_SELECT, select_press_handler, menu_release_handler, NULL);
+  window_raw_click_subscribe(BUTTON_ID_DOWN, down_press_handler, menu_release_handler, NULL);
+}
   
 void input_init_main(Window *window) {
   window_set_click_config_provider(window, click_config_provider_main);
@@ -80,6 +94,10 @@ void input_init_main(Window *window) {
 
 void input_init_status(Window *window) {
   window_set_click_config_provider(window, click_config_provider_status);
+}
+
+void input_init_menu(Window *window) {
+  window_set_click_config_provider(window, click_config_provider_menu);
 }
 
 void input_deinit() {

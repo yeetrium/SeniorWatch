@@ -5,6 +5,7 @@
 typedef enum {
   FACE,
   STATUS,
+  MENU,
 } window_type;
 
 void window_manager_init();

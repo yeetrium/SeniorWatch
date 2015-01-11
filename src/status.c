@@ -38,11 +38,6 @@ void status_update(const char *status) {
   text_layer_set_text(text_layer_status, status);
 }
 
-void status_pop() {
-  status_timer = NULL;
-  window_manager_pop(true);
-}
-
 void status_push_update(const char *status, const int lifespan) {
   window_manager_push(STATUS, false);
   status_update(status);
@@ -52,4 +47,9 @@ void status_push_update(const char *status, const int lifespan) {
   } else if(status_timer != NULL) {
     app_timer_cancel(status_timer);
   }
+}
+
+void status_pop() {
+  status_timer = NULL;
+  window_manager_pop(true);
 }
