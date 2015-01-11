@@ -7,8 +7,6 @@ TextLayer *text_layer_status;
 InverterLayer *layer_flasher;
 GBitmap *icon_bitmap;
 
-AppTimer *status_timer = NULL;
-
 void status_init(Window *window) {
   Layer *window_layer = window_get_root_layer(window);
   GRect bounds = layer_get_bounds(window_layer);
@@ -56,6 +54,5 @@ void status_push_update(const char *status) {
 }
 
 void status_pop() {
-  status_timer = NULL;
   window_manager_pop(true);
 }

@@ -79,19 +79,14 @@ void face_time_init() {
   // graphics
   GRect bounds = layer_get_bounds(layer_face);
   
-  bounds.origin.y = bounds.size.h * 0.5 - bounds.size.h * 0.15;
-  bounds.size.h *= 0.35;
-  
-  time_layer = text_layer_create(bounds);
+  time_layer = text_layer_create(GRect(0, bounds.size.h * 0.3, bounds.size.w, 50));
   text_layer_set_background_color(time_layer, GColorClear);
-  text_layer_set_font(time_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28_BOLD));
+  text_layer_set_font(time_layer, fonts_get_system_font(FONT_KEY_ROBOTO_BOLD_SUBSET_49));
   text_layer_set_text_color(time_layer, GColorWhite);
   text_layer_set_text_alignment(time_layer, GTextAlignmentCenter);
   layer_add_child(layer_face, text_layer_get_layer(time_layer));
   
-  bounds.origin.y += bounds.size.h + 5;
-  
-  date_layer = text_layer_create(bounds);
+  date_layer = text_layer_create(GRect(0, bounds.size.h * 0.3 + 50, bounds.size.w, 30));
   text_layer_set_background_color(date_layer, GColorClear);
   text_layer_set_font(date_layer, fonts_get_system_font(FONT_KEY_GOTHIC_28));
   text_layer_set_text_color(date_layer, GColorWhite);

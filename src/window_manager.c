@@ -14,9 +14,9 @@ void tick_handler(struct tm *tick_time, TimeUnits units_change) {
   
   // Displays the current time
   if (clock_is_24h_style()) {
-    strftime(s_time_buffer, sizeof(s_time_buffer), "%k:%M %p", tick_time);
+    strftime(s_time_buffer, sizeof(s_time_buffer), "%k:%M", tick_time);
   } else {
-    strftime(s_time_buffer, sizeof(s_time_buffer), "%l:%M %p", tick_time);
+    strftime(s_time_buffer, sizeof(s_time_buffer), "%l:%M", tick_time);
   }
   
   strftime(s_date_buffer, sizeof(s_date_buffer), "%a %b %e", tick_time);
