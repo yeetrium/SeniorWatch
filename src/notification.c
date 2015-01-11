@@ -5,7 +5,6 @@
 #include "face.h"
 #include "window_manager.h"
 #include "menu.h"
-#include "input.h"
   
 #include "jsmn.h"
   
@@ -26,56 +25,25 @@ void inbox_received_callback(DictionaryIterator *iterator, void *context) {
       case GENERAL_NOTIFICATION_KEY:
         APP_LOG(APP_LOG_LEVEL_INFO, "GENERAL_KEY");
         snprintf(s_buffer, sizeof(s_buffer), "'%s'", data->value->cstring);
-      
         status_push_update(s_buffer);
-        APP_LOG(APP_LOG_LEVEL_INFO, s_buffer);
-      
-        // Create GBitmap, then set to created BitmapLayer
-        s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_ALERT);
-        s_background_layer = bitmap_layer_create(GRect(0, 0, 32, 32));
-        bitmap_layer_set_alignment(s_background_layer, GAlignTop);
-        bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
-        layer_add_child(window_get_root_layer(window_stack_get_top_window()), bitmap_layer_get_layer(s_background_layer));
+        //APP_LOG(APP_LOG_LEVEL_INFO, s_buffer);
         
         vibes_short_pulse();
         break;
       case RESPONSE_NOTIFICATION_KEY:
         APP_LOG(APP_LOG_LEVEL_INFO, "RESPONSE_NOTIFICATION_KEY");
-      
-        // Create GBitmap, then set to created BitmapLayer
-        s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_RESPONSE);
-        s_background_layer = bitmap_layer_create(GRect(0, 0, 32, 32));
-        bitmap_layer_set_alignment(s_background_layer, GAlignTop);
-        bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
-        layer_add_child(window_get_root_layer(window_stack_get_top_window()), bitmap_layer_get_layer(s_background_layer));
-      
         vibes_long_pulse();
         vibes_short_pulse();
         vibes_long_pulse();
         break;
       case PHONE_CALL_KEY:
         APP_LOG(APP_LOG_LEVEL_INFO, "PHONE_CALL_KEY");
-      
-        // Create GBitmap, then set to created BitmapLayer
-        s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_PHONE);
-        s_background_layer = bitmap_layer_create(GRect(0, 0, 32, 32));
-        bitmap_layer_set_alignment(s_background_layer, GAlignTop);
-        bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
-        layer_add_child(window_get_root_layer(window_stack_get_top_window()), bitmap_layer_get_layer(s_background_layer));
-      
         break;
       case UPDATE_TASK_KEY:
         APP_LOG(APP_LOG_LEVEL_INFO, "UPDATE_TASK_KEY");
         // TODO: Create a 2d array of strings
         // from data->value
         //menu_update()
-      
-         // Create GBitmap, then set to created BitmapLayer
-        s_background_bitmap = gbitmap_create_with_resource(RESOURCE_ID_TASK);
-        s_background_layer = bitmap_layer_create(GRect(0, 0, 32, 32));
-        bitmap_layer_set_alignment(s_background_layer, GAlignTop);
-        bitmap_layer_set_bitmap(s_background_layer, s_background_bitmap);
-        layer_add_child(window_get_root_layer(window_stack_get_top_window()), bitmap_layer_get_layer(s_background_layer));
       
         jsmn_parser parser;
 
@@ -88,17 +56,15 @@ void inbox_received_callback(DictionaryIterator *iterator, void *context) {
       
 
         r = jsmn_parse(&parser, temp, tokens, 32);
-        char testBuffer[42];
+        
       if(r >= 0) {
           jsmntok_t key = tokens[1];
           unsigned int length = key.end - key.start;
-          status_push_update("first");
-          snprintf(testBuffer, sizeof(testBuffer), "'%u'", length);
-          status_push_update(testBuffer);
-          char keyString[length + 1];    
+          char keyString[length + 1];   
+         status_push_update("first");
            memcpy(keyString, &temp[key.start], length);
           keyString[length] = '\0';
-          //status_push_update(keyString);
+          status_push_update(keyString);
         }
         
         break;

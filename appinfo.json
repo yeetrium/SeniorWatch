@@ -9,46 +9,6 @@
     "resources": {
         "media": [
             {
-                "file": "images/menu_icon_walker.png",
-                "name": "MENU",
-                "type": "png"
-            },
-            {
-                "file": "images/icon_911.png",
-                "name": "NINEOO",
-                "type": "png"
-            },
-            {
-                "file": "images/icon_task.png",
-                "name": "TASK",
-                "type": "png"
-            },
-            {
-                "file": "images/icon_response.png",
-                "name": "RESPONSE",
-                "type": "png"
-            },
-            {
-                "file": "images/icon_phone.png",
-                "name": "PHONE",
-                "type": "png"
-            },
-            {
-                "file": "images/icon_general.png",
-                "name": "ALERT",
-                "type": "png"
-            },
-            {
-                "file": "images/icon_ems_right.png",
-                "name": "EMSRIGHT",
-                "type": "png"
-            },
-            {
-                "file": "images/icon_ems_left.png",
-                "name": "EMSLEFT",
-                "type": "png"
-            },
-            {
                 "file": "images/checkmark.png",
                 "name": "CHECKMARK",
                 "type": "png"
