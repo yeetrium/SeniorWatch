@@ -18,7 +18,7 @@ void status_init(Window *window) {
   
   bounds.origin.x = 5;
   bounds.origin.y += bounds.size.h * 0.4;
-  bounds.size.w -= 10;
+  bounds.size.w -= 25;
   bounds.size.h *= 0.6;
   
   text_layer_status = text_layer_create(bounds);

@@ -77,7 +77,6 @@ void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reaso
       face_greeting_update(response);
       break;
     case STATUS:
-      app_timer_register(2000, status_pop, NULL);
       status_push_update(response);
       break;
     case MENU:
@@ -119,7 +118,6 @@ void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
       face_greeting_update(response);
       break;
     case STATUS:
-      app_timer_register(2000, status_pop, NULL);
       status_push_update(response);
       break;
     case MENU:
