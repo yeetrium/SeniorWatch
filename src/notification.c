@@ -7,7 +7,7 @@
 notification_key expected_key;
 
 void inbox_received_callback(DictionaryIterator *iterator, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Message received!");
+  APP_LOG(APP_LOG_LEVEL_INFO, "Message received!");
   Tuple *data = dict_read_first(iterator);
   
   while (data != NULL) {
@@ -19,6 +19,7 @@ void inbox_received_callback(DictionaryIterator *iterator, void *context) {
         APP_LOG(APP_LOG_LEVEL_INFO, "UNUSABLE_NOTIFICATION_KEY");
         break;
       case GENERAL_NOTIFICATION_KEY:
+        APP_LOG(APP_LOG_LEVEL_INFO, "GENERAL_KEY");
         snprintf(s_buffer, sizeof(s_buffer), "'%s'", data->value->cstring);
         status_push_update(s_buffer);
         vibes_short_pulse();
@@ -97,7 +98,7 @@ void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reaso
 }
 
 void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send message.");
+  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send message.");
   
   window_type type = window_manager_get_top_type();
   char *response = "";

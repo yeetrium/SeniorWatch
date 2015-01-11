@@ -1,3 +1,5 @@
+#include <ctype.h>
+
 #include "window_manager.h"
 #include "face.h"
 #include "status.h"
@@ -7,6 +9,26 @@
 Window *window_main;
 Window *window_status;
 Window *window_menu;
+
+char *trimwhitespace(char *str)
+{
+  char *end;
+
+  // Trim leading space
+  while(isspace((int)*str)) str++;
+
+  if(*str == 0)  // All spaces?
+    return str;
+
+  // Trim trailing space
+  end = str + strlen(str) - 1;
+  while(end > str && isspace(((int)*end))) end--;
+
+  // Write new null terminator
+  *(end+1) = 0;
+
+  return str;
+}
 
 void tick_handler(struct tm *tick_time, TimeUnits units_change) {
   static char s_time_buffer[16];
@@ -21,7 +43,9 @@ void tick_handler(struct tm *tick_time, TimeUnits units_change) {
   
   strftime(s_date_buffer, sizeof(s_date_buffer), "%a %b %e", tick_time);
   
-  face_time_update(s_time_buffer, s_date_buffer);
+  
+  
+  face_time_update(trimwhitespace(s_time_buffer), s_date_buffer);
   
   // Add each window's update function if needed
 }

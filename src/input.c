@@ -82,7 +82,6 @@ void click_config_provider_main(void *context) {
   window_raw_click_subscribe(BUTTON_ID_UP, up_press_handler, release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_SELECT, select_press_handler, release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_DOWN, down_press_handler, release_handler, NULL);
-  APP_LOG(APP_LOG_LEVEL_INFO, "kind of");
 }
 
 void click_config_provider_status(void *context) {
@@ -90,8 +89,6 @@ void click_config_provider_status(void *context) {
   window_raw_click_subscribe(BUTTON_ID_UP, up_press_handler, status_release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_SELECT, select_press_handler, status_release_handler, NULL);
   window_raw_click_subscribe(BUTTON_ID_DOWN, down_press_handler, status_release_handler, NULL);
-  
-  APP_LOG(APP_LOG_LEVEL_INFO, "Subscriptions baby");
 }
 
 void click_config_provider_menu(void *context) {
